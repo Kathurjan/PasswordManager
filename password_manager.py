@@ -78,3 +78,54 @@ class PasswordManager:
 
 if __name__ == "__main__":
     PasswordManager()
+
+
+# Derive the encryption key from the master password using PBKDF2
+    def derive_key(self, password):
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=self.salt,
+            iterations=100000,  # High iteration count for computational cost against brute-force attacks
+            backend=default_backend()
+        )
+        return kdf.derive(password.encode())
+
+    # Add a new password entry for a given website, username, and password
+    def add_password_entry(self):
+        website = simpledialog.askstring("Input", "Enter website:")
+        username = simpledialog.askstring("Input", "Enter username:")
+        password = simpledialog.askstring("Input", "Enter password:")
+
+        if not website or not username or not password:
+            messagebox.showwarning("Input Error", "All fields are required!")
+            return
+
+        # Encrypt the password before saving
+        encrypted_password = self.encrypt(password)
+        entry = {"website": website, "username": username, "password": encrypted_password}
+        entries = self.get_entries_from_vault()
+        entries.append(entry)
+        self.save_entries_to_vault(entries)
+        messagebox.showinfo("Success", "Password saved successfully.")
+
+    # Retrieve an existing password entry for a given website
+    def retrieve_password_entry(self):
+        website = simpledialog.askstring("Input", "Enter website to retrieve:")
+
+        if not website:
+            messagebox.showwarning("Input Error", "Website is required!")
+            return
+
+        entries = self.get_entries_from_vault()
+        for entry in entries:
+            if entry["website"] == website:
+                # Decrypt the stored password
+                decrypted_password = self.decrypt(entry["password"])
+                if decrypted_password:
+                    messagebox.showinfo("Password Entry", f"Website: {entry['website']}\nUsername: {entry['username']}\nPassword: {decrypted_password}")
+                else:
+                    messagebox.showerror("Error", "Failed to decrypt password. The data might be corrupted.")
+                return
+
+        messagebox.showerror("Not Found", "No entry found for the given website.")
