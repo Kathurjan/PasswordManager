@@ -129,3 +129,62 @@ if __name__ == "__main__":
                 return
 
         messagebox.showerror("Not Found", "No entry found for the given website.")
+
+    # Generate a secure password consisting of random characters
+    def generate_secure_password(self):
+        length = 16
+        characters = string.ascii_letters + string.digits + "!@#$%^&*()_-+=<>?"
+        password = ''.join(random.choice(characters) for _ in range(length))
+
+    # Create a new window to display the password and provide a copy button
+        password_window = tk.Toplevel(self.root)
+        password_window.title("Generated Password")
+        password_window.geometry("400x200")
+        password_window.configure(bg="#2b2b2b")
+
+        password_label = tk.Label(password_window, text=f"Generated Password: {password}", font=("Helvetica", 14),
+                                      fg="#f0f0f0", bg="#2b2b2b")
+        password_label.pack(pady=20)
+
+    def copy_to_clipboard():
+        self.root.clipboard_clear()
+        self.root.clipboard_append(password)
+        self.root.update()  # Keep the clipboard content
+        messagebox.showinfo("Copied", "Password copied to clipboard")
+
+        copy_button = ttk.Button(password_window, text="Copy Password", command=copy_to_clipboard)
+        copy_button.pack(pady=10)
+
+    # Encrypt the given plain text using AES in CFB mode
+    def encrypt(self, plain_text):
+        iv = os.urandom(16)  # Generate a random initialization vector (IV)
+        cipher = Cipher(algorithms.AES(self.master_key), modes.CFB(iv), backend=default_backend())
+        encryptor = cipher.encryptor()
+        encrypted_text = encryptor.update(plain_text.encode()) + encryptor.finalize()
+        return base64.b64encode(iv + encrypted_text).decode()  # Encode IV + encrypted text as base64
+
+    # Decrypt the given cipher text using AES in CFB mode
+    def decrypt(self, cipher_text):
+        try:
+            decoded_data = base64.b64decode(cipher_text)
+            iv = decoded_data[:16]  # Extract the IV from the decoded data
+            encrypted_text = decoded_data[16:]
+            cipher = Cipher(algorithms.AES(self.master_key), modes.CFB(iv), backend=default_backend())
+            decryptor = cipher.decryptor()
+            decrypted_text = decryptor.update(encrypted_text) + decryptor.finalize()
+            return decrypted_text.decode()
+        except (ValueError, UnicodeDecodeError) as e:
+            print(f"Decryption error: {e}")
+            return None
+
+    # Retrieve all entries from the password vault (stored in JSON format)
+    def get_entries_from_vault(self):
+        if os.path.exists(vault_file_path):
+            with open(vault_file_path, "r") as file:
+                return json.load(file)
+        return []
+
+    # Save all entries to the password vault (in JSON format)
+    def save_entries_to_vault(self, entries):
+        with open(vault_file_path, "w") as file:
+            json.dump(entries, file, indent=4)
