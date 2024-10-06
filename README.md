@@ -46,7 +46,7 @@ An AES cipher is a method by which we permeate over a given plaintext password u
 ```
 
 # Further plans
-This functions as a local prototype but in order to incorporate this as a distributed solution.
+This functions as a local prototype but we should plan to make this a distributed solution.
 
 This would have to make use of a layer of obfuscation between the layer where the encryption takes place and the input level. In other words we would take advantage of a client side implementation, like a web-aplication or locally installed program with access to the internet as well as a server implementation.
 
