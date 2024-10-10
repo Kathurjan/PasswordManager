@@ -48,9 +48,13 @@ An AES cipher is a method by which we permeate over a given plaintext password u
 # Further plans
 This functions as a local prototype but we should plan to make this a distributed solution.
 
-This would have to make use of a layer of obfuscation between the layer where the encryption takes place and the input level. In other words we would take advantage of a client side implementation, like a web-aplication or locally installed program with access to the internet as well as a server implementation.
+Taking a page out of 1pass https://support.1password.com/1password-security/ we would keep a secret key stored locally that is combined with the account password to encrypt the entire collection of data.
 
-utilizing HTTPS with gain access to TLS which in turn uses RFA and Diffe-helman protect our inter-application communication. 
+In order to retrieve the data we would use the password along with the locally stored secret key to decrypt a small part and validate the correctness of the password.
+
+in order to use multiple devices the user must transfer their secret key to the new device. The account password is therefore never stored.
+
+For communication with the server we can use HTTPS whice secure our inter application communication.
 
 ## Diffe-helman
 
