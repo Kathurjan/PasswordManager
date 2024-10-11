@@ -82,3 +82,6 @@ pip install cryptography
 navigate to root folder.
 
 python password_manager_gui.py
+
+![image](https://github.com/user-attachments/assets/2d149824-1afe-4c3e-9bbd-e7d2fff4ba96)
+
