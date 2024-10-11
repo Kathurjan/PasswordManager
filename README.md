@@ -46,6 +46,7 @@ An AES cipher is a method by which we permeate over a given plaintext password u
 ```
 
 # Further plans
+
 This functions as a local prototype but we should plan to make this a distributed solution.
 
 Taking a page out of 1pass https://support.1password.com/1password-security/ we would keep a secret key stored locally that is combined with the account password to encrypt the entire collection of data.
@@ -56,6 +57,8 @@ in order to use multiple devices the user must transfer their secret key to the 
 
 For communication with the server we can use HTTPS whice secure our inter application communication.
 
+This enables TLS which encorporates some cryptographic practices like diffe-helman and RSA.
+
 ## Diffe-helman
 
 A mathematical code sharing method that enables a process in which two parties can obtain a shared secret while still utilizing an public communication channel. 
@@ -65,3 +68,17 @@ A mathematical code sharing method that enables a process in which two parties c
 RSA is a method by which we can verify the authenticity of a communicator. By having a recipient utilize a private and public key pair they can both verify incoming and outgoing messages.
 
 This prevents man in the middle attacks that are a key weakness to pure diffe-hellman.
+
+# Setup
+
+Python is required to run this application.
+
+## Required modules
+
+pip install cryptography
+
+## Run
+
+navigate to root folder.
+
+python password_manager_gui.py
