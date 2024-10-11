@@ -42,7 +42,9 @@ class PasswordManager:
     # Add a new password entry
     def add_password_entry(self, website, username, password):
         encrypted_password = self.encrypt(password)
-        entry = {"website": website, "username": username, "password": encrypted_password}
+        encrypted_webiste = self.encrypt(website)
+        encrypted_username = self.encrypt(username)
+        entry = {"website": encrypted_webiste, "username": encrypted_username, "password": encrypted_password}
         entries = self.get_entries_from_vault()
         entries.append(entry)
         self.save_entries_to_vault(entries)
@@ -51,8 +53,8 @@ class PasswordManager:
     def retrieve_password_entry(self, website):
         entries = self.get_entries_from_vault()
         for entry in entries:
-            if entry["website"] == website:
-                return entry, self.decrypt(entry["password"])
+            if self.decrypt(entry["website"]) == website:
+                return entry, self.decrypt(entry["password"]), self.decrypt(entry["username"]), self.decrypt(entry["website"])
         return None, None
 
     # Encrypt the given plain text using AES in CFB mode

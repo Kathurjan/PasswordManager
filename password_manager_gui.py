@@ -70,9 +70,9 @@ class PasswordManagerGUI:
             messagebox.showwarning("Input Error", "Website is required!")
             return
 
-        entry, decrypted_password = self.password_manager.retrieve_password_entry(website)
+        entry, decrypted_password, decrypted_username, decrypted_website = self.password_manager.retrieve_password_entry(website)
         if entry:
-            messagebox.showinfo("Password Entry", f"Website: {entry['website']}\nUsername: {entry['username']}\nPassword: {decrypted_password}")
+            messagebox.showinfo("Password Entry", f"Website: {decrypted_website}\nUsername: {decrypted_username}\nPassword: {decrypted_password}")
         else:
             messagebox.showerror("Not Found", "No entry found for the given website.")
 
