@@ -83,5 +83,12 @@ navigate to root folder.
 
 python password_manager_gui.py
 
+# Documentation
+
+## GUI
 ![image](https://github.com/user-attachments/assets/2d149824-1afe-4c3e-9bbd-e7d2fff4ba96)
+
+## Planned distribution schema
+![image](https://github.com/user-attachments/assets/c8b1cf3f-e5c0-4071-81e7-f95dae914a6d)
+
 
